@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.bignerdranch.android.criminalintent.R;import java.lang.Override;import java.lang.String;import java.util.Calendar;
 import java.util.Date;
@@ -36,12 +37,13 @@ public class DatePickerFragment extends DialogFragment {
 
     private void sendResult(int resultCode){
         if(getTargetFragment() == null)
-            return;;
+            return;
 
         Intent i = new Intent();
         i.putExtra(EXTRA_DATE,mDate);
 
-        getTargetFragment().onActivityResult(getTargetRequestCode(),resultCode,i);
+        getTargetFragment()
+                .onActivityResult(getTargetRequestCode(), resultCode, i);
     }
 
     @NonNull
@@ -64,6 +66,7 @@ public class DatePickerFragment extends DialogFragment {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 mDate = new GregorianCalendar(year,monthOfYear,dayOfMonth).getTime();
+                Toast.makeText( getActivity() ,Integer.toString(dayOfMonth),Toast.LENGTH_SHORT);
                 getArguments().putSerializable(EXTRA_DATE,mDate);
             }
         });
