@@ -89,7 +89,7 @@ public class CrimeFragment extends Fragment {
                 mCrime.setSolved(isChecked);
             }
         });
-
+        int a = 0;
         return v;
     }
 
