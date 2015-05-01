@@ -98,4 +98,5 @@ public class CrimeListFragment extends ListFragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_crime_list, menu);
     }
+
 }

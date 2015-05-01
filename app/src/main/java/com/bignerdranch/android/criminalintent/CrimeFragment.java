@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -52,7 +53,7 @@ public class CrimeFragment extends Fragment {
                               Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime,container,false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+            ((ActionBarActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         mTitleField = (EditText)v.findViewById(R.id.crime_title);
@@ -96,7 +97,7 @@ public class CrimeFragment extends Fragment {
                 mCrime.setSolved(isChecked);
             }
         });
-        int a = 0;
+        int a = 5;
         return v;
     }
 
