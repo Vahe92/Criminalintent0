@@ -1,10 +1,14 @@
 package com.bignerdranch.android.criminalintent;
 
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,8 +26,9 @@ import java.util.ArrayList;
  */
 public class CrimeListFragment extends ListFragment {
     private ArrayList<Crime> mCrimes;
-
+    private boolean mSubtitleVisible;
     public static final String TAG = "CrimeListFragment";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,8 @@ public class CrimeListFragment extends ListFragment {
 
         CrimeAdapter adapter = new CrimeAdapter(mCrimes);
         setListAdapter(adapter);
+        setRetainInstance(true);
+        mSubtitleVisible = false;
     }
 
     @Override
@@ -88,15 +95,43 @@ public class CrimeListFragment extends ListFragment {
                 i.putExtra(CrimeFragment.EXTRA_CRIME_ID, crime.getId());
                 startActivityForResult(i, 0);
                 return true;
+            case R.id.menu_item_show_subtitle:
+                if(((ActionBarActivity)getActivity()).getSupportActionBar().getSubtitle() == null){
+                    ((ActionBarActivity)getActivity()).getSupportActionBar().setSubtitle(R.string.subtitle);
+                    mSubtitleVisible = true;
+                    item.setTitle(R.string.hide_subtitle);
+                }else{
+                    ((ActionBarActivity)getActivity()).getSupportActionBar().setSubtitle(null);
+                    mSubtitleVisible = false;
+                    item.setTitle(R.string.show_subtitle);
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    @TargetApi(11)
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v= super.onCreateView(inflater,container,savedInstanceState);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            if(mSubtitleVisible){
+                ((ActionBarActivity)getActivity())
+                        .getSupportActionBar().setSubtitle(R.string.subtitle);
+            }
+        }
+        return  v;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_crime_list, menu);
+        MenuItem showSubtitle = menu.findItem(R.id.menu_item_show_subtitle);
+        if(mSubtitleVisible && showSubtitle != null){
+            showSubtitle.setTitle(R.string.hide_subtitle);
+        }
     }
 
 }
